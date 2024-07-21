@@ -1,0 +1,21 @@
+{
+    "files.associations": {
+        "cmath": "cpp",
+        "atomic": "cpp",
+        "random": "cpp",
+        "*.tcc": "cpp",
+        "cstddef": "cpp",
+        "algorithm": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "vector": "cpp",
+        "string_view": "cpp",
+        "memory": "cpp",
+        "initializer_list": "cpp",
+        "new": "cpp",
+        "iterator": "cpp"
+    }
+}
