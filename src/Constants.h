@@ -14,7 +14,7 @@
 
 #define Limit_1 26   // pin limit switch Motor 1
 #define Limit_2 27   // pin limit switch Motor 2
-#define B_Start A2
+#define Start_Button 34  // butti 
 #define Limit_open A5
 #define Limit_dw A3
 #define Knift 33

@@ -118,12 +118,12 @@ void updataPosition()
   Serial.println(angle_line);
   q[1][0] = Position_X - Distance * sin(angle_line);
   q[1][1] = Position_Y + Distance * cos(angle_line);
-  q[2][0] = Position_X + (Distance-80) * sin(angle_line);
-  q[2][1] = Position_Y - (Distance-80) * cos(angle_line);
+  q[2][0] = Position_X + (Distance - 80) * sin(angle_line);
+  q[2][1] = Position_Y - (Distance - 80) * cos(angle_line);
 
   // q[1][0] = Position_X ;
   // q[1][1] = Position_Y ;
- 
+
   Serial.println("Update position from camera!");
   Serial.print(q[1][0]);
   Serial.print("\t");
@@ -131,7 +131,6 @@ void updataPosition()
   Serial.print(q[2][0]);
   Serial.print("\t");
   Serial.println(q[2][1]);
-
 
   // MoveZ(Position_Z);
   // delay(500);
@@ -185,17 +184,6 @@ void calculateAngularVelocity(float J[3][3], float x_dot[3], float theta_dot[3])
   }
 }
 
-void FindSPIpin()
-{
-  Serial.print("MOSI: ");
-  Serial.println(MOSI);
-  Serial.print("MISO: ");
-  Serial.println(MISO);
-  Serial.print("SCK: ");
-  Serial.println(SCK);
-  Serial.print("SS: ");
-  Serial.println(SS);
-}
 void GoHome()
 {
   Serial.println("Start_gotoHOME");
@@ -222,28 +210,21 @@ IBusBM IBus;
 
 void setup()
 {
-
   InitIBUS();
-  // while (IBus.cnt_rec == 0)
-  // {
-  //   Serial.println("Disconnect");
-  //   // delay(500);
-  // }
   setCpuFrequencyMhz(240);
 
   pinMode(Limit_1, INPUT);
   pinMode(Limit_2, INPUT);
-  // // pinMode(B_Start, INPUT_PULLUP);
+  pinMode(Start_Button, INPUT);
   pinMode(Knift, OUTPUT);
   // pinMode(Limit_dw, INPUT);
   // pinMode(Limit_open, INPUT);
 
   Serial.begin(115200);
 
-  // FindSPIpin();
   InitMotor();
   // InitIbus();
-  // digitalWrite(Knift, LOW);
+  digitalWrite(Knift, LOW);
   // Stepper
   Serial.println("SETup_ Finish");
 
@@ -282,8 +263,6 @@ void setup()
   rtc_wdt_set_length_of_reset_signal(RTC_WDT_SYS_RESET_SIG, RTC_WDT_LENGTH_3_2us);
   rtc_wdt_set_stage(RTC_WDT_STAGE0, RTC_WDT_STAGE_ACTION_RESET_SYSTEM);
   rtc_wdt_set_time(RTC_WDT_STAGE0, 500000);
-
-  //  SetKnift("OFF");
 }
 
 void updateMatixM()
@@ -337,33 +316,24 @@ void loop()
   {
     if (initi == true)
     {
-      delay(5000);
       // Serial.println("begin");
       //  Set_PID_RAM(Motor_1, Kp_Pos_1, Ki_Pos_1, Kp_Spe_1, Ki_Spe_1, Kp_Tor_1, Ki_Tor_1);
       //  Set_PID_RAM(Motor_2, Kp_Pos_2, Ki_Pos_2, Kp_Spe_2, Ki_Spe_2, Kp_Tor_2, Ki_Tor_2);
-      //  delay(500);
-      //  Offset_1 = -980171;
-      //  Offset_2 = -1418278;
-
+      delay(3000);
       initi = false;
-
       GoHome();
-
       SetInit();
-      // delay(5000);
     }
 
     switch (runMode)
     {
     case Manual:
-      // CheckRemote();
       delay(10);
       Move_basemode_auto_tranjectory();
       break;
 
     case Automation:
       if (ReceiveSerial())
-      // if (IBus.readChannel(6) > 1500)
       {
         if ((EnableRUN == 1) && (isRunning == false))
         {
@@ -374,7 +344,7 @@ void loop()
           isRunning = true;
           //  Serial.println("Start_Cut");
           SetInit();
-          delay(500);
+          delay(10);
         }
         while (Calculate == true)
         {
@@ -524,21 +494,6 @@ void loop()
         }
         // break;
       }
-
-      // int val;
-
-      // for(int i = 0 ; i<10;i++)
-      // {
-      //   Serial.print("\t");
-      //   Serial.print(i);
-      //   Serial.print(": ");
-      //   Serial.print(IBus.readChannel(i));
-      // }
-      // Serial.println();
-
-      // Serial.println("FINISH");
-      // delay(1000);
-
       else
       {
         Serial.println("Waiting data!");
@@ -548,7 +503,6 @@ void loop()
   }
   else
   {
-    // Serial.println("offfff");
     if (IBus.readChannel(7) > 1500)
     {
       Serial.println("Automation");
@@ -558,6 +512,13 @@ void loop()
     {
       Serial.println("Manual");
       runMode = Manual;
+      theta11 = -1.1377;
+      theta22 = 2.7274;
+      knifeActivated = false;
+      // double cur_theta1 = 0;
+      // double cur_theta2 = 0;
+
+      // GetAngle(&cur_theta1, &cur_theta2);
     }
     delay(500);
     initi = true;

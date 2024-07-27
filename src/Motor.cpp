@@ -43,7 +43,7 @@ vCAN_t canRecei;
 /// @brief
 void InitMotor()
 {
-    mcp2515.begin(MCP_NORMAL, CAN_1000KBPS, MCP_8MHZ);
+    mcp2515.begin(MCP_NORMAL, CAN_1000KBPS, MCP_16MHZ);
     mcp2515.setMode(MCP_NORMAL);
     canRecei.can_id = 0x141;
     canRecei.can_dlc = 8;
@@ -311,7 +311,7 @@ void GotoHome_Z()
 /// @brief
 void GotoHOME_1()
 {
-    // Serial.println("RUNNING_gotoHOME_Motor_1");
+    Serial.println("RUNNING_gotoHOME_Motor_1");
     //  Di chuyển về home với tốc độ cao ban đầu
     const uint16_t initialSpeed = 1200;
     const uint16_t initialStep = 1000;
