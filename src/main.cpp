@@ -337,7 +337,6 @@ void loop()
       {
         if ((EnableRUN == 1) && (isRunning == false))
         {
-          // digitalWrite(Led_Status_SERIAL, HIGH);
           EnableRUN = 0;
           updataPosition();
           Calculate = true;
